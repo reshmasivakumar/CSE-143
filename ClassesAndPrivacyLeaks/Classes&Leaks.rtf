@@ -1,0 +1,117 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs22 Summary\par
+Build three classes (Money, Date and Bill) for use in managing a set of outstanding and paid bills.  Submit these three classes and a test driver (4 files total) that exercises all functionality for these classes.  (Submit only the .java source code files.)  In this assignment, we\rquote ll explore class composition, overloading, accessors and mutators, privacy leaks, toString(), and equals().\par
+\par
+Introduction\par
+Just as in previous assignments, we will not only be focusing on code, but also taking a \ldblquote bigger picture\rdblquote  view of the overarching design, using the software development techniques learned this week (specifically, class invariants, privacy leaks, and more on object composition).   In this assignment, the interfaces are already defined for you below.  Once you have classes implemented for Money, Date, and Bill, you will need to develop a test harness (or testing strategy) to exercise the functionality of your class.  I\rquote ve provided a sample driver that may need additional testing as a starting point (the link to the driver file is in the driver class description section below), but this is simply a starting point and will not test every function in Bill, Date, or Money (and your final driver should). Since a Bill makes use of a Money and a Date object, we can start our development there, but first, a bit on the class invariants we will want to build into our system.\par
+\par
+Class Invariants\par
+Your software must enforce the following rules:\par
+\par
+(1)   Money Class\par
+\par
+Our internal cents should be between [0-99] at all times\par
+Our internal Cents and Dollars should never be < 0, at all times\par
+(2)   Bill Class\par
+\par
+The internal paid date should be on or earlier than the due date.\par
+Every Bill is owed someone, so the originator should never be empty.\par
+(3)   Date Class\par
+\par
+All days should be between [1-31]\par
+All months should be between [1-12]\par
+All years should be between [2014-2024]\par
+(4)   Data privacy should be maintained at all times; verify there are no privacy leaks such as returning aliases to an private object instance variable when you really should be returning a copy of that object instead.  (Be sure to make prevent a similar type of privacy leak by making copies of all incoming objects as well in set methods.)\par
+\par
+The Money Class\par
+This class is used to track a USD amount consisting of two integers to manage dollars and cents.  All dollars and cents will be positive or 0, and cents will never exceed 99.  The data and methods below will be called from the test driver I\rquote ll use, so be sure to adhere to the names of the functions, as well as the number, order, and type of arguments handed to each function, as indicated below.  Also, previous labs and lectures contains hints and details on how to build and test the Money or Date class.\par
+\par
+Data Members\par
+\par
+You should define a pair of instance variables for use in tracking dollars and cents These should be private and avoid privacy leaks.\par
+Method Members\par
+\par
+Money(int dol)\par
+This constructor initializes using dollars input and assumes no cents\par
+Money(int dol, int cent) \par
+This constructor initializes dollars and cents accordingly\par
+Money(Money other)\par
+This constructor could redirect to the one above\par
+Getters/setters for dollars and cents\par
+These should be careful to not invalidate class invariants\par
+Also these functions should avoid privacy leaks\par
+double getMoney()\par
+A getter for the total monetary amount, as a double\par
+Returns 5.75, for example\par
+void setMoney(int dol, int cent)\par
+Sets our dollars and cents, accordingly \par
+This function should make use of setters for dollars and cents\par
+void add(int dol)\par
+Adds the int passed into the function to dollars\par
+void add(int dol, int cents)\par
+Adds to dollars and cents the two ints passed into the function.\par
+void add(Money other)\par
+Adds to this object the dollars and cents stored in the other object.\par
+boolean equals(Object o)\par
+Determines if this money object is equal to that Money object\par
+String toString()\par
+Prints out a Money object as a String, such as \ldblquote $3.75\rdblquote\par
+The Date Class\par
+This should be similar to the Date classes we\rquote ve covered in class and in the textbook.  Do not use any built-in Date classes for this assignment, and provide all of the common class components for this Date.  For example, you should add:\par
+\par
+Data Members\par
+\par
+These data items should be private or final\par
+Constructors & copy constructors\par
+Getters/setters for month, day and year\par
+boolean equals(Object o)\par
+String toString()\par
+Method Members\par
+\par
+Follow the Savitch examples for how to build the methods needed in a Date class.\par
+The Bill Class\par
+Construct a class for use as a bill that contains data related to an outstanding or paid bill of a specific amount of money.  The class should contain the amount of the bill as a Money object, the due date of the bill (a Date object) and a Date object to track the date paid (null if not yet paid).  Check to be sure that when paying the bill, the date isn\rquote t past the due date \endash  if so, either quit (System.exit()) with an error message or throw an exception. (Note: either build a Date class(more simple and direct) or use Java\rquote s Date class.)\par
+\par
+Data as Instance Variables:\par
+\par
+amount \endash  a Money object\par
+dueDate \endash  a Date object\par
+paidDate \endash  a Date object, null if not yet paid\par
+originator \endash  a String containing the company or institution who issued the bill\par
+Methods in the Public Interface:\par
+\par
+Bill(Money amount, Date dueDate, String originator)\par
+constructor (null for paidDate)\par
+Bill(Bill toCopy)\par
+copy constructor\par
+Date getDueDate() \endash  return the dueDate*\par
+String getOriginator() \endash  return the originator\par
+boolean isPaid() \endash  return true if bill has been paid\par
+void setPaid(Date onDay) \endash  make the bill paid, save the date*\par
+void setUnpaid() \endash  make the bill unpaid\par
+void setDueDate(Date nextDate) \endash  set the due date of the bill*\par
+void setAmount(Money amount) \endash  change the amount*\par
+Money getAmount() \endash  provide the Money object for the bill that is the amount*\par
+void setOriginator(String originator)* - change the originator\par
+String toString() \endash  build a string that reports the amount, when its due, to whom, whether paid, and if paid, the date paid.\par
+boolean equals(Bill toCompare) \endash  determine if the two bills are identical\par
+*Note: The items starred above are to be considered critical sections in your code where it could be very easy to violate the class invariants that we\rquote ve defined above.  Proceed carefully in these functions and be sure that, for example, calling setPaid() with a date that is after the due date will fail, or that calling setDueDate() with a date that is before the paid date will also fail.\par
+\par
+The Driver Class\par
+See the driver, linked below, as an example starting point for your final driver, which should test your Money, Bill and Date classes.\par
+\par
+BillMoneyDateDriver.javaView in a new window\par
+\par
+Let me emphasize again, this driver is only a starting point.  Your driver should be much more complete in its testing.  At a minimum, it should test every method of every class at least once.  Most methods need more than one test because there is more than one use case of interest.\par
+\par
+Hints\par
+Start with the smallest class first (Date or Money) and then build the larger classes (Bill).\par
+First, use the sample driver with your classes \emdash  then extend the driver to test each function in Bill, Date and Money.\par
+Be sure to document your code with comments, highlighting the class invariants where they are relevant.\par
+Again, make sure you comment all methods and the class with javadoc comments.  If you have a driver that has code someone else has written (e.g., is based on a skeleton), you have to javadoc comment the methods someone else wrote also.\par
+Your code should not depend on absolute path specifications or any other environment-specific specifications.  The program should not ask for user input from the console.\par
+Watch out for privacy leaks in your getters, setters, and constructors.\par
+About This Document\par
+Original by Rob Nash. Minor edits by Johnny Lin, January 2015.\par
+}
+ 
